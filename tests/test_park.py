@@ -16,3 +16,7 @@ def test_skips():
     })
     assert set(park.possible_moves(1)) == {2, 3, 5, 6, 10, 11}
     assert set(park.possible_moves(3)) == {5, 6, 7, 8, 10, 11, 12, 13}
+
+
+def test_draw():
+    _ = draw_park()

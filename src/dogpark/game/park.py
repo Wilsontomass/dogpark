@@ -12,10 +12,10 @@ with open(importlib.resources.files("dogpark.game") / "parks.yaml") as f:
 class Park:
     def __init__(self, modifiers: dict):
         """
-        Parks contain a map of all locations. each one starts the same, and then we add af ew extra
+        Parks contain a map of all locations. each one starts the same, and then we add a few extra
         resources to each one based on the park card drawn from parks.yaml
         """
-        # the keys are the position on the board, where the lower path is 0-9 and the upper is 10-14
+        # the indices are the positions on the board, where the lower path is 0-9 and the upper is 10-14
         self.board = [
             ["STICK"],
             ["BALL"],
