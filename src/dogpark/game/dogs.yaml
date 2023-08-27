@@ -1,0 +1,15 @@
+
+Canaan_Dog:
+  b: U
+  a: search_and_rescue
+  c: BALL
+
+Fox_Terrier:
+  b: TE
+  a: sociable
+  c: BALL, BALL
+
+Large_Munsterlander:
+  b: G
+  a: playmate
+  c: BALL, STICK
