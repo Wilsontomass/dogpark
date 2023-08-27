@@ -1,5 +1,5 @@
-from dogpark.game import dog
+from dogpark.game.game import dogpark
 
 
-def test_get_dogs():
-    print(dog.dogs)
+def test_dogpark():
+    dogpark()

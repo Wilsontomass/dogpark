@@ -2,7 +2,7 @@
 Canaan_Dog:
   b: U
   a: search_and_rescue
-  c: BALL
+  c: [BALL]
 
 Fox_Terrier:
   b: TE
@@ -12,4 +12,4 @@ Fox_Terrier:
 Large_Munsterlander:
   b: G
   a: playmate
-  c: BALL, STICK
+  c: [BALL, STICK]
