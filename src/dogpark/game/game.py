@@ -79,6 +79,7 @@ class Dogpark:
         random.shuffle(self.breed_experts)
         self.draw_dogs()
         self.draw_park()
+        self.print_status()  # players can see the setup before choosing objectives
         available_objectives = draw_objective_pairs(self.num_players)
         for player in self.players:
             player.choose_objective(*available_objectives.pop())
