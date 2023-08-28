@@ -27,3 +27,12 @@ OBJECTIVE_DESCRIPTIONS = {
 def objective_description(objective_id: int):
     return OBJECTIVE_DESCRIPTIONS[objective_id]
 
+
+def draw_objective_pairs(num_players) -> List[Tuple[int, int]]:
+    """Draw 2 objectives for each player from the pool (not returned), one hard (1-5 or 2-5) and one easy (6-10)"""
+    hards = range(1, 6) if num_players >= 4 else range(2, 6)
+    easies = range(6, 11)
+
+    hards = random.sample(hards, k=num_players)
+    easies = random.sample(easies, k=num_players)
+    return list(zip(hards, easies))
