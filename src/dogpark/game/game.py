@@ -3,7 +3,7 @@ import random
 
 import yaml
 
-from dogpark.game.dog import draw_dogs, DOGS
+from dogpark.game.dog import DOGS
 from dogpark.game.forecast import forecast_description
 from dogpark.game.objective import draw_objective_pairs
 from dogpark.game.park import draw_park
@@ -126,7 +126,7 @@ class Dogpark:
             prefix = ">>" if i + 1 == self.round else "  "
             print(f"{prefix} Round {i + 1}: {forecast_description(forecast)}")
         print("Breed Experts:")
-        print("  \n".join(zip(range(8, 0, -1), self.breed_experts)))
+        print("\n".join([f"{8 - i}: {breed}" for i, breed in enumerate(self.breed_experts)]))
 
     def play_recruitment(self):
         pass
