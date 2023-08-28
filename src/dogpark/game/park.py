@@ -3,10 +3,9 @@ import random
 
 import yaml
 
-dogs = dict()
 
 with open(importlib.resources.files("dogpark.game") / "parks.yaml") as f:
-    parks = yaml.safe_load(f)
+    PARKS = yaml.safe_load(f)
 
 
 class Park:
@@ -67,6 +66,9 @@ class Park:
 
         return list(possible)
 
+    def __repr__(self):
+        return f"{self.board}"
+
 
 def draw_park() -> Park:
-    return Park(parks.pop(random.choice(list(parks.keys()))))
+    return Park(PARKS.pop(random.choice(list(PARKS.keys()))))
