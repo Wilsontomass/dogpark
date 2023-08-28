@@ -1,5 +1,5 @@
-from dogpark.game.game import dogpark
+from dogpark.game.game import Dogpark
 
 
 def test_dogpark():
-    dogpark()
+    d = Dogpark()
