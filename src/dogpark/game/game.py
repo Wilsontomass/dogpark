@@ -133,7 +133,37 @@ class Dogpark:
         print("\n".join([f"{8 - i}: {breed}" for i, breed in enumerate(self.breed_experts)]))
 
     def play_recruitment(self):
-        pass
+        """Players compete in 2 rounds of Offers to attract their most desired Dogs to their Kennel"""
+        print("Recruitment")
+        players_to_bid = self.players.copy()
+        for bidding_round in range(1, 3):
+            print(f"Bidding Round {bidding_round}")
+            # num_dogs lists of up to num_players bids
+            bids: dict[str, list[tuple[Player, int]]] = {dog_name: [] for dog_name in self.dogs}
+            for player in players_to_bid:
+                dog, amount = player.bid(self.dogs)  # TODO: in physical game, we probably wont receive amount
+                bids[dog].append((player, amount))
+
+            # resolve bids
+            for dog, dog_bids in bids.items():
+                if len(dog_bids) > 0:
+                    # highest bid wins, if tied, first player wins
+                    winner, amount = max(dog_bids, key=lambda x: x[1])
+                    winner.reputation -= amount
+                    self.dogs.pop(dog)
+                    winner.kennel.append(dog)
+                    players_to_bid.remove(winner)
+
+            # players left without a dog pick from remaining dogs, choosing in turn order
+            for player in players_to_bid:
+                dog = player.choose_dog(self.dogs)
+                # TODO: if player has no reputation, then there should be another round of choosing
+                player.reputation -= 1
+                self.dogs.pop(dog)
+                player.kennel.append(dog)
+                
+            # reset dogs
+            self.draw_dogs()
 
     def play_selection(self):
         pass
