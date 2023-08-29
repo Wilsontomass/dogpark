@@ -6,26 +6,26 @@ import yaml
 from dogpark.game.dog import DOGS
 from dogpark.game.forecast import forecast_description
 from dogpark.game.objective import draw_objective_pairs
-from dogpark.game.park import draw_park
+from dogpark.game.park import draw_park, Park
 from dogpark.game.player import Player
 
 
 class Dogpark:
 
     def __init__(self):
-        """When created the game is setup"""
+        """When created the game is set up"""
         self.round = 1
         self.is_physical = input("Is this a physical game? (y/n) ").lower() == "y"
         self.num_players = int(input("How many players? "))
         self.num_dogs = 3 if self.num_players <= 3 else 4
 
         # declare properties before setup
-        self.players = None
-        self.forecasts = None
-        self.breed_experts = None
-        self.dogs_deck = DOGS.copy()  # won't be relevant for physical games
-        self.dogs = None
-        self.park = None
+        self.players: list[Player] = []
+        self.forecasts: list[int] = []
+        self.breed_experts: list[str] = []
+        self.dogs_deck: dict[str, dict] = DOGS.copy()  # won't be relevant for physical games
+        self.dogs: dict[str, dict] = {}
+        self.park: Park = Park({})
 
         if self.is_physical:
             self.setup_physical()
@@ -106,9 +106,13 @@ class Dogpark:
             print("The following park was drawn:", self.park)
 
     def play_round(self):
+        print("------------------------------")
         self.play_recruitment()
+        print("------------------------------")
         self.play_selection()
+        print("------------------------------")
         self.play_walking()
+        print("------------------------------")
         self.play_home_time()
 
     def print_status(self):
