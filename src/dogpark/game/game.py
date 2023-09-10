@@ -12,7 +12,7 @@ from dogpark.game.player import Player
 
 class Dogpark:
 
-    def __init__(self):
+    def __init__(self, autorun: bool = True):
         """When created the game is set up"""
         self.round = 1
         self.is_physical = input("Is this a physical game? (y/n) ").lower() == "y"
@@ -27,16 +27,17 @@ class Dogpark:
         self.dogs: dict[str, dict] = {}
         self.park: Park = Park({})
 
-        if self.is_physical:
-            self.setup_physical()
-        else:
-            self.setup_console()
+        if autorun:
+            if self.is_physical:
+                self.setup_physical()
+            else:
+                self.setup_console()
 
-        for r in range(1, 5):
-            self.round = r
-            self.play_round()
+            for r in range(1, 5):
+                self.round = r
+                self.play_round()
 
-        self.end_game()
+            self.end_game()
 
     def setup_physical(self):
         """Set up a game by asking the user what cards were drawn in the physical game"""
