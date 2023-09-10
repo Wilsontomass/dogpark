@@ -167,7 +167,12 @@ class Dogpark:
             self.draw_dogs()
 
     def play_selection(self):
-        pass
+        """Players take turns to place Dogs from their Kennel onto their Lead"""
+        print("Selection")
+        for player in self.players:
+            # TODO: maybe AIs could be given an advantage by going last, since the rules state this happens
+            #   simultaneously
+            player.do_selection()
 
     def play_walking(self):
         pass
@@ -196,7 +201,6 @@ class Dogpark:
             # TODO: save players
         }
         yaml.dump(yml, open(f"{name}.yml", "w"))
-
 
 
 if __name__ == "__main__":

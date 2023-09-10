@@ -10,8 +10,8 @@ class Player:
         self.ai = None  # TODO: implement AI
         self.is_physical = is_physical
         self.colour = colour
-        self.kennel = []
-        self.lead = []
+        self.kennel: dict[str, dict] = {}
+        self.lead: dict[str, dict] = {}
         self.reputation = 5
         self.resources = {
             "STICK": 2,
@@ -75,3 +75,53 @@ class Player:
 
     def __repr__(self):
         return f"{self.colour} - {self.reputation} REP - {self.kennel} - {self.resources} - {self.objective}"
+
+    def do_selection(self):
+        if self.is_human:
+
+            # a lot of trust here that human players aren't cheating
+            if self.is_physical:
+                print(f"Player {self.colour}, which dogs did you select, seperated by commas?")
+                dogs = input().replace(" ", "").split(",")
+                print("What did you pay?")
+                resources = input().replace(" ", "").split(",")
+            else:
+                print(f"Player {self.colour}, Choose your dogs:")
+                print(self.kennel)
+                dogs = input().replace(" ", "").split(",")
+                print("What did you pay?")
+                resources = input().replace(" ", "").split(",")
+
+            for dog in dogs:
+                self.lead[dog] = self.kennel.pop(dog)
+            for resource in resources:
+                self.resources[resource] -= 1
+        else:
+            # iterate through and just choose dogs we can afford
+            dogs = []
+            available_resources = self.resources.copy()
+            for dog, dog_stats in self.kennel.items():
+                cost: list[str] = dog_stats["c"]  # array like ["STICK", "STICK", "BALL"]
+                # turn cost into a dict
+                cost: dict[str, int] = {r: cost.count(r) for r in set(cost)}
+                if all([available_resources[r] >= cost[r] for r in cost]):
+                    dogs.append(dog)
+                    for r in cost:
+                        available_resources[r] -= cost[r]
+
+                # break if 3 dogs chosen
+                if len(dogs) == 3:
+                    break
+
+            # subtract resources from player and add dog to lead
+            for dog in dogs:
+                cost: list[str] = self.kennel[dog]["c"]
+                # turn cost into a dict
+                cost: dict[str, int] = {r: cost.count(r) for r in set(cost)}
+                for r in cost:
+                    self.resources[r] -= cost[r]
+                self.lead[dog] = self.kennel.pop(dog)
+
+        # add walked to each dog on lead
+        for dog in self.lead:
+            self.lead[dog]["w"] += 1
