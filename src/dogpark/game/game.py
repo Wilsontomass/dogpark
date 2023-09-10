@@ -51,7 +51,7 @@ class Dogpark:
             self.forecasts = [int(input(f"Forecast {i}: ")) for i in range(1, 5)]  # or None
 
         print("please enter the list of breed experts in order, high to low, seperated by commas:")
-        self.breed_experts = input("> ").replace(" ", "").split(",")
+        self.breed_experts = input("Breed Experts: ").replace(" ", "").split(",")
 
         self.draw_dogs()
 
@@ -97,8 +97,11 @@ class Dogpark:
     def draw_park(self):
         if self.is_physical:
             print("Please enter the dictionary representing the park modifiers drawn:")
-            park_str = input("> ")
-            self.park = json.loads(park_str)
+            park_str = input("Park: ")
+            park_json = json.loads(park_str)
+            for key in park_json:  # convert string keys to int keys
+                park_json[int(key)] = park_json.pop(key)
+            self.park = Park(park_json)
         else:
             self.park = draw_park()
             print("The following park was drawn:", self.park)
