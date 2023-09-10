@@ -7,9 +7,34 @@ Canaan_Dog:
 Fox_Terrier:
   b: TE
   a: sociable
-  c: BALL, BALL
+  c: [BALL, BALL]
 
 Large_Munsterlander:
   b: G
   a: playmate
   c: [BALL, STICK]
+
+Gordon_Setter:
+  b: G
+  a: sociable
+  c: [STICK, STICK]
+
+Tibetan_Terrier:
+  b: TE
+  a: toy_collector
+  c: [TOY, TOY]
+
+Bulldog:
+  b: U
+  a: social_butterfly
+  c: [STICK, TOY]
+
+Retriever_Labrador:
+  b: G
+  a: treat_lover
+  c: [TREAT, TREAT]
+
+Italian_Greyhound:
+  b: TO
+  a: social_butterfly
+  c: [STICK, TREAT]
