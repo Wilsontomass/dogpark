@@ -172,6 +172,9 @@ class Dogpark:
     def play_home_time(self):
         pass
 
+    def reload_dogs(self):
+        self.dogs_deck = reload_dogs().copy()
+
     def end_game(self):
         print("Game over!")
         self.print_status()
