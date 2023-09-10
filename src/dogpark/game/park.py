@@ -3,6 +3,7 @@ import random
 
 import yaml
 
+from dogpark.game.player import Player
 
 with open(importlib.resources.files("dogpark.game") / "parks.yaml") as f:
     PARKS = yaml.safe_load(f)
@@ -37,6 +38,8 @@ class Park:
                 self.board[pos] = ["SKIP"]
             else:
                 self.board[pos].extend(bonus)
+
+        self.player_positions: dict[str, int] = {}  # colour: position
 
     def possible_moves(self, position: int) -> list[int]:
         # given an existing position 1 to 14, return a list of possible positions to move to
