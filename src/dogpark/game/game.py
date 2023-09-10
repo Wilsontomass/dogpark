@@ -3,7 +3,7 @@ import random
 
 import yaml
 
-from dogpark.game.dog import DOGS
+from dogpark.game.dog import DOGS, reload_dogs
 from dogpark.game.forecast import forecast_description
 from dogpark.game.objective import draw_objective_pairs
 from dogpark.game.park import draw_park, Park
