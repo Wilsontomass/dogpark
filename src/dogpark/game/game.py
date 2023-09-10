@@ -67,15 +67,7 @@ class Dogpark:
         self.forecasts = random.sample(range(1, 12), k=4)  # get ids for 4 forecasts
         if self.forecasts[0] == 11:  # swap first and second
             self.forecasts[0], self.forecasts[1] = self.forecasts[1], self.forecasts[0]
-        self.breed_experts = [
-            "W",
-            "H",
-            "TE",
-            "P",
-            "TO",
-            "G",
-            "U",
-        ]
+        self.breed_experts = ["W", "H", "TE", "P", "TO", "G", "U", ]
         random.shuffle(self.breed_experts)
         self.draw_dogs()
         self.draw_park()
@@ -87,7 +79,12 @@ class Dogpark:
     def draw_dogs(self):
         if self.is_physical:
             print("Please enter the names of the dogs drawn, seperated by commas:")
-            dog_names = input("> ").replace(" ", "").split(",")
+            dog_names = input("Dogs: ").replace(" ", "").split(",")
+            if any([name not in DOGS for name in dog_names]):
+                input("Dog name not found, please add it and press enter to continue")
+                self.reload_dogs()
+                self.draw_dogs()
+                return
             self.dogs = {name: DOGS.pop(name) for name in dog_names}
         else:
             self.dogs = {k: self.dogs_deck.pop(k) for k in random.sample(list(self.dogs_deck), k=self.num_dogs)}
