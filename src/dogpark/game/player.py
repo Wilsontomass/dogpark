@@ -1,6 +1,8 @@
+import random
 from typing import Optional
 
 from dogpark.game.objective import objective_description
+from dogpark.game.park import Park
 
 
 class Player:
