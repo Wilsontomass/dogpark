@@ -86,4 +86,5 @@ def draw_park(num_players: int) -> Park:
     Parks numbered 1-8 are for 2-3 players (Rerouted Park)
     Parks numbered 9-16 are for 4 players (Plentiful Park)
     """
-    return Park(PARKS.pop(random.choice(list(PARKS.keys()))), num_players)
+    available_parks = [i for i in range(1, 9)] if num_players < 4 else [i for i in range(9, 17)]
+    return Park(PARKS.pop(random.choice(available_parks)), num_players)
