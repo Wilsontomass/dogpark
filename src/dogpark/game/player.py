@@ -11,9 +11,7 @@ from dogpark.game.game import Dogpark
 class Player(ABC):
     """A base class player of dogpark"""
 
-    def __init__(
-            self, game: Dogpark, colour: str, is_physical: bool = False
-    ):
+    def __init__(self, game: Dogpark, colour: str, is_physical: bool = False):
         self.game = game
         self.is_physical = is_physical  # governs certain print and input behaviour
         self.colour = colour
@@ -192,9 +190,7 @@ class Player(ABC):
 
         # lose some rep for each dog without a walked token
         loss = 2 if self.game.current_forecast() == 8 else 0 if self.game.current_forecast() == 9 else 1
-        self.reputation -= sum([
-            loss for dog in self.kennel if self.kennel[dog]["w"] == 0
-        ])
+        self.reputation -= sum([loss for dog in self.kennel if self.kennel[dog]["w"] == 0])
 
         # return dogs to kennel
         self.kennel.update(self.lead)
@@ -224,6 +220,7 @@ class Player(ABC):
         used at the end of the game, but can also be used to calculate the score at any point in the game,
         as if the game ended at that point.
         """
+
         def printif(*args):
             if print_breakdown:
                 print(*args)

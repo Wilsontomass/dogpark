@@ -7,7 +7,6 @@ from dogpark.game.player import Player
 
 
 class HumanPlayer(Player):
-
     def choose_objective(self, hard: int = None, easy: int = None):
         """Give the player an easy and hard objective, and they choose one"""
         if self.is_physical:  # in this case, passed easy/hard doesn't matter
@@ -76,8 +75,7 @@ class HumanPlayer(Player):
         if "crafty" in lead_abilities:
             for gain in lead_abilities["crafty"]:
                 print(
-                    f"You have crafty, and can turn something into {gain.upper()}"
-                    f" would you like to use it? (y/n)"
+                    f"You have crafty, and can turn something into {gain.upper()}" f" would you like to use it? (y/n)"
                 )
                 if input().lower() == "y":
                     print(f"Your resources: {self.resources}")

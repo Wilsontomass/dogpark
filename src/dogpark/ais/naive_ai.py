@@ -7,7 +7,6 @@ from dogpark.game.park import Park
 
 
 class NaiveAI(DogparkAI):
-
     def choose_objective(self, hard: int = None, easy: int = None) -> int:
         return easy
 
@@ -106,4 +105,3 @@ class NaiveAI(DogparkAI):
 
     def swap(self, walked: bool) -> Optional[tuple[str, str]]:
         return  # AI doesn't swap for now
-

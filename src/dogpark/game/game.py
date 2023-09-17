@@ -11,12 +11,10 @@ from dogpark.game.park import Park, PARKS
 
 
 class Dogpark:
-
-    def __init__(
-            self, autorun: bool = True, physical: bool = None, num_players: int = None, ais: list[str] = None
-    ):
+    def __init__(self, autorun: bool = True, physical: bool = None, num_players: int = None, ais: list[str] = None):
         """When created the game is set up"""
         from dogpark.game.player import Player
+
         self.round = 1
         if physical is None:
             physical = input("Is this a physical game? (y/n) ").lower() == "y"
@@ -62,6 +60,7 @@ class Dogpark:
                 players[colour] = get_ai(ai_name)(self, colour, is_physical=self.is_physical)
             else:
                 from dogpark.game.human import HumanPlayer
+
                 players[colour] = HumanPlayer(self, colour, is_physical=self.is_physical)
 
         self.players = list(players.values())
@@ -84,14 +83,12 @@ class Dogpark:
     def setup_console(self):
         """Set up a game by drawing cards and printing them to the console"""
         from dogpark.game.human import HumanPlayer
+
         if self.ais is None:
             print("Please enter a list of AI players, seperated by commas:")
             self.ais = input("AIs: ").replace(" ", "").split(",")
         available_colours = ["Red", "Green", "Yellow", "Purple"]
-        self.players = [
-            get_ai(ai)(self, available_colours.pop(), is_physical=self.is_physical)
-            for ai in self.ais
-        ]
+        self.players = [get_ai(ai)(self, available_colours.pop(), is_physical=self.is_physical) for ai in self.ais]
         self.players += [
             HumanPlayer(self, colour, is_physical=self.is_physical)
             for colour in random.sample(available_colours, self.num_players - len(self.players))
@@ -99,7 +96,15 @@ class Dogpark:
         self.forecasts = random.sample(range(1, 12), k=4)  # get ids for 4 forecasts
         if self.forecasts[0] == 11:  # swap first and second
             self.forecasts[0], self.forecasts[1] = self.forecasts[1], self.forecasts[0]
-        self.breed_experts = ["W", "H", "TE", "P", "TO", "G", "U", ]
+        self.breed_experts = [
+            "W",
+            "H",
+            "TE",
+            "P",
+            "TO",
+            "G",
+            "U",
+        ]
         random.shuffle(self.breed_experts)
         self.draw_dogs()
         self.draw_park()
@@ -186,12 +191,13 @@ class Dogpark:
                 self.physical_bidding()
             else:
                 self.automated_bidding()
-                
+
             # reset dogs
             self.draw_dogs()
 
     def automated_bidding(self):
         from dogpark.game.player import Player
+
         players_to_bid = self.players.copy()
         # dict of dog name, and then a list of tuples of (player, bid amount). if physical game, bid amount is None
         # until revealed
@@ -295,8 +301,10 @@ class Dogpark:
             if len(winners) == 1:
                 print(f"Winner: {winners[0]} after winning the 8 point breed expert")
             else:
-                print(f"Winners: {', '.join([winner for winner in winners])} after jointly winning the"
-                      f" 8 point breed expert")
+                print(
+                    f"Winners: {', '.join([winner for winner in winners])} after jointly winning the"
+                    f" 8 point breed expert"
+                )
 
     def save_game(self, name: str):
         """Save to yaml"""
@@ -364,6 +372,7 @@ class Dogpark:
 def get_ai(ai_name: str) -> type:
     if ai_name == "NaiveAI":
         from dogpark.ais.naive_ai import NaiveAI
+
         return NaiveAI
 
 
