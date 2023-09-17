@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import abstractmethod, ABC
 from typing import Optional
 
+from dogpark.game import ANY
 from dogpark.game.park import Park
 from dogpark.game.game import Dogpark
 
@@ -26,6 +27,33 @@ class Player(ABC):
             "TREAT": 1,
         }
         self.objective: Optional[int] = None  # may be unknown for physical players
+        self.lead_converters = None  # used for playmate, go fetch, and obedient
+
+    def get_lead_abilities(self):
+        abilities = {}
+        for dog in self.lead:
+            ability = self.lead[dog]["a"]
+            if ability.startswith("crafty") or ability.startswith("eager"):
+                name, gain = ability.split("_")
+                if name not in abilities:
+                    abilities[name] = []
+                abilities[name].append(gain)
+        return abilities
+
+    def get_lead_converters(self):
+        # todo: we could hash this
+        converters = []
+        for dog in self.lead:
+            if self.lead[dog]["a"][:8] == "go_fetch":
+                prereq, gain = self.lead[dog]["a"][9:].split("_")
+                converters.append((prereq, gain))
+            elif self.lead[dog]["a"][:8] == "obedient":
+                prereq = self.lead[dog]["a"].split("_")[1]
+                converters.append((prereq, "REP"))
+            elif self.lead[dog]["a"][:8] == "playmate":
+                prereq = self.lead[dog]["a"].split("_")[1]
+                converters.append((prereq, "SWAP"))
+        return converters
 
     def __repr__(self):
         return f"{self.colour} - {self.reputation} REP - {self.kennel} - {self.resources} - {self.objective}"
@@ -120,6 +148,22 @@ class Player(ABC):
             bonuses = park.board[destination]
             self.apply_bonuses(bonuses)
 
+        # resolve any go fetch, obedient, and playmate dogs
+        converters = self.get_lead_converters()
+
+        unconsidered = bonuses.copy()
+        # they can trigger eachother, so we need to loop until there are no more
+        while unconsidered:
+            new = []
+            for prereq, gain in converters.copy():
+                if prereq in unconsidered:
+                    self.apply_bonus(gain)
+                    bonuses.append(gain)
+                    new.append(gain)
+                    converters.remove((prereq, gain))
+
+            unconsidered = new
+
         return destination, bonuses
 
     @abstractmethod
@@ -129,6 +173,10 @@ class Player(ABC):
         may choose to replace a dog in the field with 1 of the dog cards they have drawn. The other dog cards are
         discarded.
         """
+
+    @abstractmethod
+    def choose_bonus(self, bonuses: list[str]) -> str:
+        """given a list of bonuses, choose one and return it"""
 
     def home_time(self):
         """
@@ -142,51 +190,90 @@ class Player(ABC):
         # by definition, all dogs on the lead have been walked
         self.reputation += len(self.lead) * 2
 
-        # lose 1 rep for each dog without a walked token
-        self.reputation -= sum([1 for dog in self.kennel if self.kennel[dog]["w"] == 0])
+        # lose some rep for each dog without a walked token
+        loss = 2 if self.game.current_forecast() == 8 else 0 if self.game.current_forecast() == 9 else 1
+        self.reputation -= sum([
+            loss for dog in self.kennel if self.kennel[dog]["w"] == 0
+        ])
 
         # return dogs to kennel
         self.kennel.update(self.lead)
         self.lead = {}
 
-    def final_score(self) -> int:
+        for dog_dict in self.kennel.values():
+            if self.game.current_forecast() == 2 and dog_dict["b"] == "TE":
+                self.choose_bonus(ANY)
+                self.choose_bonus(ANY)
+            elif self.game.current_forecast() == 4 and dog_dict["b"] == "W":
+                self.choose_bonus(ANY)
+                self.reputation += 1
+            elif self.game.current_forecast() == 5 and dog_dict["b"] == "TO":
+                self.reputation += 3
+
+    def add_dog_to_kennel(self, dog: str, dog_dict: dict[str, dict]):
+        self.kennel[dog] = dog_dict
+        if self.game.current_forecast() == 7:
+            if dog_dict["b"] == "U":
+                self.reputation += 1
+                self.choose_bonus(ANY)
+
+    def final_score(self, print_breakdown: bool = False) -> int:
         """
         Calculate the final score for this player.
 
         used at the end of the game, but can also be used to calculate the score at any point in the game,
         as if the game ended at that point.
         """
+        def printif(*args):
+            if print_breakdown:
+                print(*args)
+
+        printif(f"Final score for {self.colour}:")
 
         rep = self.reputation
+        printif(f"  Reputation: {rep}")
 
         # Player assigns resources to dogs. There isn't actually any optimization to be done here so we can just
         # calculate it.
         for dog in self.kennel.values():
             ability = dog["a"]
+            dog_rep = 0
             if ability == "pack_dog":
-                rep += [d["b"] == dog["b"] for d in self.kennel.values()].count(True) * 2
+                dog_rep = [d["b"] == dog["b"] for d in self.kennel.values()].count(True) * 2
             elif ability == "raring_to_go":
-                rep += dog["w"] * 2
+                dog_rep = dog["w"] * 2
             elif ability == "sociable":
-                rep += len(set([d["b"] for d in self.kennel.values()]))
+                dog_rep = len(set([d["b"] for d in self.kennel.values()]))
             elif ability in ("stick_chaser", "ball_hog", "toy_collector", "treat_lover"):
                 resource = ability.split("_")[0].upper()
                 modifier = 2 if resource in ("TREAT", "TOY") else 1
                 # add up to 6 of each
                 assigned = min(6, self.resources[resource])
                 self.resources[resource] -= assigned
-                rep += assigned * modifier
+                dog_rep = assigned * modifier
+
+            if dog_rep > 0:
+                printif(f"  {ability.replace('_', ' ').capitalize()} rep: {dog_rep}")
+            rep += dog_rep
 
         # breed experts
-        rep += self.game.calculate_breed_experts()[self.colour][1]
+        breed_rep = self.game.calculate_breed_experts()[self.colour][1]
+        printif(f"  Breed experts: {breed_rep}")
 
         # objectives
+        objective_rep = 0
         if self.objective is not None:  # if unknown, assume 0
             # TODO: at the end of the game, we actually do need this
-            rep += objective_score(self, self.objective, self.game.num_players)
+            objective_rep = objective_score(self, self.objective, self.game.num_players)
+            printif(f"  Objective: {objective_rep}")
 
         # 1 rep for each 5 remaining resources
-        rep += sum(self.resources.values()) // 5
+        remaining_resource_rep = sum(self.resources.values()) // 5
+        printif(f"  Remaining resources rep: {remaining_resource_rep}")
+
+        rep += breed_rep + objective_rep + remaining_resource_rep
+
+        printif(f"Total: {rep}")
 
         return rep
 

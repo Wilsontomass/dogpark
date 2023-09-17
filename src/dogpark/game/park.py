@@ -1,5 +1,6 @@
 import importlib.resources
 import random
+from itertools import chain
 from typing import List
 
 import yaml
@@ -32,6 +33,8 @@ class Park:
             ["REP"],
             ["BALL", "BALL"],
         ]
+        # saved so can be used for some forecasts
+        self.location_bonuses = [b for b in chain(modifiers.values()) if b not in ("SKIP", "LOOK", "SWAP")]
         self.is_special = False
         for pos, bonus in modifiers.items():
             if bonus == ["SKIP"]:  # if the bonus is skip, we replace the existing bonus
@@ -78,13 +81,3 @@ class Park:
 
     def __repr__(self):
         return f"{self.board}"
-
-
-def draw_park(num_players: int) -> Park:
-    """
-    Draw a park card from parks.yaml
-    Parks numbered 1-8 are for 2-3 players (Rerouted Park)
-    Parks numbered 9-16 are for 4 players (Plentiful Park)
-    """
-    available_parks = [i for i in range(1, 9)] if num_players < 4 else [i for i in range(9, 17)]
-    return Park(PARKS.pop(random.choice(available_parks)), num_players)

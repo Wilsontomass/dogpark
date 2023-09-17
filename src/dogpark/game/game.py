@@ -4,10 +4,10 @@ from typing import Optional
 
 import yaml
 
-from dogpark.game.dog import DOGS, reload_dogs
+from dogpark.game.dog import reload_dogs
 from dogpark.game.forecast import forecast_description
 from dogpark.game.objective import draw_objective_pairs
-from dogpark.game.park import draw_park, Park
+from dogpark.game.park import Park, PARKS
 
 
 class Dogpark:
@@ -31,8 +31,10 @@ class Dogpark:
         # declare properties before setup
         self.players: list[Player] = []
         self.forecasts: list[int] = []
+        self.current_forecast = lambda: self.forecasts[self.round - 1]
         self.breed_experts: list[str] = []
-        self.dogs_deck: dict[str, dict] = DOGS.copy()  # won't be relevant for physical games
+        self.dogs_deck: dict[str, dict] = reload_dogs()  # won't be relevant for physical games
+        self.parks_deck: dict[str, dict] = PARKS.copy()  # won't be relevant for physical games
         self.dogs: dict[str, dict] = {}
         self.park: Park = Park({}, self.num_players)
 
@@ -112,12 +114,12 @@ class Dogpark:
         if self.is_physical:
             print("Please enter the names of the dogs drawn, seperated by commas:")
             dog_names = input("Dogs: ").replace(" ", "").split(",")
-            if any([name not in DOGS for name in dog_names]):
+            if any([name not in self.dogs_deck for name in dog_names]):
                 input("Dog name not found, please add it and press enter to continue")
                 self.reload_dogs()
                 self.draw_dogs()
                 return
-            self.dogs = {name: DOGS.pop(name) for name in dog_names}
+            self.dogs = {name: self.dogs_deck.pop(name) for name in dog_names}
         else:
             self.dogs = {k: self.dogs_deck.pop(k) for k in random.sample(list(self.dogs_deck), k=self.num_dogs)}
             print(
@@ -134,7 +136,12 @@ class Dogpark:
                 park_json[int(key)] = park_json.pop(key)
             self.park = Park(park_json, self.num_players)
         else:
-            self.park = draw_park(self.num_players)
+            # Draw a park card from parks.yaml
+            # Parks numbered 1-8 are for 2-3 players (Rerouted Park)
+            # Parks numbered 9-16 are for 4 players (Plentiful Park)
+            available_parks = [i for i in range(1, 9)] if self.num_players < 4 else [i for i in range(9, 17)]
+            available_parks = list(set(available_parks) & set(self.parks_deck.keys()))
+            self.park = Park(self.parks_deck.pop(random.choice(available_parks)), self.num_players)
             print("The following park was drawn:", self.park)
 
     def play_round(self):
@@ -200,7 +207,7 @@ class Dogpark:
                 # highest bid wins, if tied, first player wins
                 winner, amount = max(dog_bids, key=lambda x: x[1])
                 winner.reputation -= amount
-                winner.kennel[dog] = self.dogs.pop(dog)
+                winner.add_dog_to_kennel(dog, self.dogs.pop(dog))
                 players_to_bid.remove(winner)
 
         # players left without a dog pick from remaining dogs, choosing in turn order
@@ -208,7 +215,7 @@ class Dogpark:
             dog = player.choose_dog(self.dogs)
             # TODO: if player has no reputation, then there should be another round of choosing
             player.reputation -= 1
-            player.kennel[dog] = self.dogs.pop(dog)
+            player.add_dog_to_kennel(dog, self.dogs.pop(dog))
 
     def physical_bidding(self):
         pass  # TODO: implement
@@ -220,6 +227,9 @@ class Dogpark:
             # TODO: maybe AIs could be given an advantage by going last, since the rules state this happens
             #   simultaneously
             selected = player.do_selection()
+            if self.current_forecast() == 6:
+                # 2 rep for each hound
+                player.reputation += 2 * [d["b"] for d in player.lead.values()].count("H")
             print(f"{player.colour} selected {selected}")
 
     def play_walking(self):
@@ -262,13 +272,13 @@ class Dogpark:
             player.home_time()
 
     def reload_dogs(self):
-        self.dogs_deck = reload_dogs().copy()
+        self.dogs_deck = reload_dogs(from_file=True)
 
     def end_game(self):
         print("Game over!")
         self.print_status()
         print("Final scores:")
-        scores = {player: player.final_score() for player in self.players}
+        scores = {player: player.final_score(print_breakdown=True) for player in self.players}
         for player, score in scores.items():
             print(f"{player.colour}: {score} REP")
 
@@ -343,7 +353,10 @@ class Dogpark:
         if walked:
             field_dict["w"] = 1
 
-        player.kennel[field_dog] = field_dict
+        if self.current_forecast() == 10:
+            field_dict["w"] = 1  # could end up with 2 walked this way
+
+        player.add_dog_to_kennel(field_dog, field_dict)
         self.dogs[kennel_dog] = kennel_dict
         print(f"{player.colour} swapped {kennel_dog} for {field_dog}")
 

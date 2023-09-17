@@ -27,3 +27,13 @@ def test_dogpark_physical(monkeypatch):
 
 def test_dogpark_automatic():
     d = Dogpark(autorun=True, physical=False, num_players=3, ais=["NaiveAI", "NaiveAI", "NaiveAI"])
+
+
+def test_many_dogpark_automatic():
+    for _ in range(100):
+        d = Dogpark(autorun=True, physical=False, num_players=3, ais=["NaiveAI", "NaiveAI", "NaiveAI"])
+
+
+def test_many_dogpark_4_player_automatic():
+    for _ in range(2000):
+        d = Dogpark(autorun=True, physical=False, num_players=4, ais=["NaiveAI", "NaiveAI", "NaiveAI", "NaiveAI"])

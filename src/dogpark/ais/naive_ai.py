@@ -2,10 +2,12 @@ import random
 from typing import Optional
 
 from dogpark.ais.dogpark_ai import DogparkAI
+from dogpark.game import ANY
 from dogpark.game.park import Park
 
 
 class NaiveAI(DogparkAI):
+
     def choose_objective(self, hard: int = None, easy: int = None) -> int:
         return easy
 
@@ -21,33 +23,48 @@ class NaiveAI(DogparkAI):
 
     def do_selection(self) -> list[str]:
         # iterate through and just choose dogs we can afford
-        dogs = []
-        available_resources = self.resources.copy()
-        for dog, dog_stats in self.kennel.items():
+        # when iterating, shuffle and put unwalked dogs first
+        dogs_to_walk = list(self.kennel.items())
+        random.shuffle(dogs_to_walk)
+        dogs_to_walk = sorted(dogs_to_walk, key=lambda x: x[1]["w"])
+
+        prior_pastoral = False
+        if self.game.current_forecast() == 3:
+            # put pastoral dogs first
+            dogs_to_walk = sorted(dogs_to_walk, key=lambda x: x[1]["b"] == "P", reverse=True)
+
+        for dog, dog_stats in dogs_to_walk:
             cost: list[str] = dog_stats["c"]  # array like ["STICK", "STICK", "BALL"]
             # turn cost into a dict
             cost: dict[str, int] = {r: cost.count(r) for r in set(cost)}
-            if all([available_resources[r] >= cost[r] for r in cost]):
-                dogs.append(dog)
-                for r in cost:
-                    available_resources[r] -= cost[r]
+            if all([self.resources[r] >= cost[r] for r in cost]):
+                if not prior_pastoral:
+                    for r in cost:
+                        self.resources[r] -= cost[r]
+                if self.game.current_forecast() == 3 and dog_stats["b"] == "P":
+                    prior_pastoral = True
+                else:
+                    prior_pastoral = False
 
+                self.lead[dog] = self.kennel.pop(dog)
             # break if 3 dogs chosen
-            if len(dogs) == 3:
+            if len(self.lead) == (4 if self.game.current_forecast() == 11 else 3):
                 break
-
-        # subtract resources from player and add dog to lead
-        for dog in dogs:
-            cost: list[str] = self.kennel[dog]["c"]
-            # turn cost into a dict
-            cost: dict[str, int] = {r: cost.count(r) for r in set(cost)}
-            for r in cost:
-                self.resources[r] -= cost[r]
-            self.lead[dog] = self.kennel.pop(dog)
 
         # add walked to each dog on lead
         for dog in self.lead:
             self.lead[dog]["w"] += 1
+
+        # AI never uses crafty, but it does use eager
+        lead_abilities = self.get_lead_abilities()
+        if "eager" in lead_abilities:
+            for resource in lead_abilities["eager"]:
+                self.resources[resource.upper()] += 1
+
+        if self.game.current_forecast() == 1:
+            for dog_dict in (self.lead | self.kennel).values():
+                if dog_dict["b"] == "G":
+                    self.choose_bonus(self.game.park.location_bonuses)
 
         return list(self.lead.keys())
 
@@ -55,12 +72,15 @@ class NaiveAI(DogparkAI):
         if len(park.leaving_bonuses) == 0:
             self.reputation -= 1
             return ["-1 REP"]
-        # AI always chooses the first leaving bonus
+        # AI always chooses the first (usually best) leaving bonus
         leaving_bonus = 0
         # apply the leaving bonus
         bonuses = park.leaving_bonuses.pop(leaving_bonus)
         self.apply_bonuses(bonuses)
         return bonuses
+
+    def choose_bonus(self, bonuses: list[str]) -> str:
+        return random.choice(bonuses)
 
     def apply_bonuses(self, bonuses: list[str]):
         # apply the bonus, however player wants to

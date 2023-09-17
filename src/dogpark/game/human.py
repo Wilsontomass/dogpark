@@ -44,6 +44,8 @@ class HumanPlayer(Player):
 
     def do_selection(self) -> list[str]:
         # a lot of trust here that human players aren't cheating
+        # we dont consider the pastoral dog forecast, since we just ask the player
+        # for the cost
         if self.is_physical:
             print(f"Player {self.colour}, which dogs did you select, seperated by commas?")
             dogs = input().replace(" ", "").split(",")
@@ -64,6 +66,30 @@ class HumanPlayer(Player):
         # add walked to each dog on lead
         for dog in self.lead:
             self.lead[dog]["w"] += 1
+
+        lead_abilities = self.get_lead_abilities()
+        if "eager" in lead_abilities:
+            for resource in lead_abilities["eager"]:
+                self.resources[resource] += 1
+
+        # crafty?
+        if "crafty" in lead_abilities:
+            for gain in lead_abilities["crafty"]:
+                print(
+                    f"You have crafty, and can turn something into {gain.upper()}"
+                    f" would you like to use it? (y/n)"
+                )
+                if input().lower() == "y":
+                    print(f"Your resources: {self.resources}")
+                    consumed = input("What would you like to consume? ").upper()
+                    self.resources[consumed] -= 1
+                    self.resources[gain.upper()] += 1
+
+        if self.game.current_forecast() == 1:
+            for dog_dict in (self.lead | self.kennel).values():
+                if dog_dict["b"] == "G":
+                    print(f"You may choose a bonus since you have a Gundog")
+                    self.choose_bonus(self.game.park.location_bonuses)
 
         return dogs
 
@@ -89,13 +115,23 @@ class HumanPlayer(Player):
         self.apply_bonuses(bonuses)
         return bonuses
 
+    def choose_bonus(self, bonuses: list[str]) -> str:
+        """Choose a single bonus from a list of bonuses"""
+        print("Available bonuses:")
+        # Print a numbered list of bonuses
+        for i, bonus in enumerate(bonuses):
+            print(f"  {i + 1}: {bonus}")
+        bonus = int(input("Choose bonus: ")) - 1
+
+        # apply the bonus
+        self.apply_bonus(bonuses[bonus])
+        return bonuses[bonus]
+
     def apply_bonuses(self, bonuses: list[str]):
         # apply the bonus, however player wants to
         while len(bonuses) > 1:
-            print("Your bonuses:", bonuses)
-            bonus = input("Which bonus would you like to apply? ")
+            bonus = self.choose_bonus(bonuses)
             bonuses.remove(bonus)
-            self.apply_bonus(bonus)
 
         # apply the last bonus
         print("Applying last bonus:", bonuses[0])
