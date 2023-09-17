@@ -11,7 +11,7 @@ Fox_Terrier:
 
 Large_Munsterlander:
   b: G
-  a: playmate
+  a: playmate_toy
   c: [STICK, BALL]
 
 Gordon_Setter:
@@ -41,12 +41,12 @@ Italian_Greyhound:
 
 Cirneco_Dell_Etna:
   b: H
-  a: go_fetch
+  a: go_fetch_stick_toy
   c: [STICK, BALL, TOY]
 
 Maltese:
   b: TO
-  a: obedient
+  a: obedient_toy
   c: [STICK, STICK, TOY]
 
 Swedish_Vallhund:
@@ -56,7 +56,7 @@ Swedish_Vallhund:
 
 Barbet:
   b: G
-  a: go_fetch
+  a: go_fetch_toy_stick
   c: [STICK, BALL, TOY]
 
 Irish_Wolfhound:
@@ -76,12 +76,12 @@ Pug:
 
 Slovakian_Rough_Haired_Pointer:
   b: G
-  a: crafty
+  a: crafty_stick
   c: [BALL]
 
 Hovawart:
   b: W
-  a: go_fetch
+  a: go_fetch_ball_ball
   c: [BALL, BALL, TREAT]
 
 Siberian_Husky:
@@ -96,17 +96,17 @@ Newfoundland:
 
 Otterhound:
   b: H
-  a: obedient
+  a: obedient_ball
   c: [BALL, TREAT, TREAT]
 
 Tibetan_Mastiff:
   b: W
-  a: obedient
+  a: obedient_treat
   c: [STICK, STICK, TOY]
 
 Sealyham_Terrier:
   b: TE
-  a: go_fetch
+  a: go_fetch_ball_stick
   c: [STICK, STICK, TOY]
 
 Alaskan_Malamute:
@@ -126,32 +126,32 @@ Chihuahua:
 
 Hungarian_Vizsla:
   b: G
-  a: crafty
+  a: crafty_ball
   c: [STICK]
 
 Hungarian_Kuvasz:
   b: P
-  a: eager
+  a: eager_ball
   c: [TREAT]
 
 Turkish_Kangal_Dog:
   b: P
-  a: crafty
+  a: crafty_stick
   c: [BALL]
 
 Bouvier_Des_Flandres:
   b: W
-  a: eager
+  a: eager_stick
   c: [TOY]
 
 Shih_Tzu:
   b: U
-  a: obedient
+  a: obedient_toy
   c: [BALL, BALL, TOY]
 
 Sloughi:
   b: H
-  a: go_fetch
+  a: go_fetch_stick_treat
   c: [STICK, BALL, TREAT]
 
 Schnauzer:
@@ -166,7 +166,7 @@ Griffon_Bruxellois:
 
 Havanese:
   b: TO
-  a: eager
+  a: eager_toy
   c: [STICK, TREAT]
 
 Dachshund_Smooth_Haired:
@@ -176,12 +176,12 @@ Dachshund_Smooth_Haired:
 
 Beauceron:
   b: P
-  a: eager
+  a: eager_stick
   c: [TOY]
 
 Australian_Silky_Terrier:
   b: TO
-  a: go_fetch
+  a: go_fetch_treat_stick
   c: [STICK, BALL, TREAT]
 
 Foxhound:
@@ -216,12 +216,12 @@ Entlebucher_Mountain_Dog:
 
 Black_And_Tan_Coonhound:
   b: H
-  a: go_fetch
+  a: go_fetch_ball_toy
   c: [STICK, BALL, TOY]
 
 Retriever_Chesapeake_Bay:
   b: G
-  a: go_fetch
+  a: go_fetch_ball_toy
   c: [STICK, BALL, TOY]
 
 Australian_Shepherd:
@@ -236,22 +236,22 @@ Staffordshire_Bull_Terrier:
 
 Bracco_Italiano:
   b: G
-  a: eager
+  a: eager_ball
   c: [TOY]
 
 Retriever_Golden:
   b: G
-  a: obedient
+  a: obedient_treat
   c: [STICK, STICK, TOY]
 
 Coton_De_Tulear:
   b: TO
-  a: crafty
+  a: crafty_stick
   c: [BALL]
 
 English_toy_terrier:
   b: TO
-  a: go_fetch
+  a: go_fetch_stick_toy
   c: [STICK, BALL, TOY]
 
 French_Bulldog:
@@ -261,7 +261,7 @@ French_Bulldog:
 
 English_Setter:
   b: G
-  a: eager
+  a: eager_stick
   c: [TREAT]
 
 Bichon_Frise:
@@ -276,12 +276,12 @@ Keeshond:
 
 Segugio_Italiano:
   b: H
-  a: go_fetch
+  a: go_fetch_toy_ball
   c: [STICK, BALL, TREAT]
 
 Dachshund_Wire_Haired:
   b: H
-  a: obedient
+  a: obedient_treat
   c: [BALL, BALL, TREAT]
 
 Lancashire_Heeler:
@@ -296,17 +296,17 @@ Welsh_Corgi:
 
 Bedlington_Terrier:
   b: TE
-  a: obedient
+  a: obedient_stick
   c: [BALL, TREAT, TREAT]
 
 Basset_Fauve_De_Bretagne:
   b: H
-  a: go_fetch
+  a: go_fetch_stick_ball
   c: [BALL, BALL, TOY]
 
 Pyranean_Mountain_Dog:
   b: P
-  a: obedient
+  a: obedient_treat
   c: [BALL, BALL, TOY]
 
 Great_Swiss_Mountain_Dog:
@@ -316,7 +316,7 @@ Great_Swiss_Mountain_Dog:
 
 Miniature_Pinscher:
   b: TO
-  a: playmate
+  a: playmate_toy
   c: [STICK, BALL]
 
 Doberman:
@@ -326,22 +326,22 @@ Doberman:
 
 Hungarian_Pumi:
   b: P
-  a: eager
+  a: eager_treat
   c: [STICK, TOY]
 
 Bullmastiff:
   b: W
-  a: obedient
+  a: obedient_stick
   c: [STICK, TREAT, TREAT]
 
 Spaniel_Field:
   b: G
-  a: go_fetch
+  a: go_fetch_stick_ball
   c: [BALL, BALL, TREAT]
 
 Poodle:
   b: U
-  a: go_fetch
+  a: go_fetch_stick_stick
   c: [STICK, STICK, TREAT]
 
 Border_Terrier:
@@ -356,7 +356,7 @@ Portuguese_Podengo:
 
 Norwich_Terrier:
   b: TE
-  a: playmate
+  a: playmate_treat
   c: [STICK, BALL]
 
 Affenpinscher:
@@ -371,7 +371,7 @@ Pointer:
 
 Bavarian_Mountain_Hound:
   b: H
-  a: crafty
+  a: crafty_ball
   c: [STICK]
 
 Borzoi:
@@ -381,7 +381,7 @@ Borzoi:
 
 Norwegian_Buhund:
   b: P
-  a: obedient
+  a: obedient_toy
   c: [STICK, STICK, TREAT]
 
 Pekingese:
