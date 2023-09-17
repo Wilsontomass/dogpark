@@ -1,16 +1,15 @@
 import importlib.resources
 import random
+from typing import List
 
 import yaml
-
-from dogpark.game.player import Player
 
 with open(importlib.resources.files("dogpark.game") / "parks.yaml") as f:
     PARKS = yaml.safe_load(f)
 
 
 class Park:
-    def __init__(self, modifiers: dict):
+    def __init__(self, modifiers: dict, num_players: int):
         """
         Parks contain a map of all locations. each one starts the same, and then we add a few extra
         resources to each one based on the park card drawn from parks.yaml
@@ -33,6 +32,7 @@ class Park:
             ["REP"],
             ["BALL", "BALL"],
         ]
+        self.is_special = False
         for pos, bonus in modifiers.items():
             if bonus == ["SKIP"]:  # if the bonus is skip, we replace the existing bonus
                 self.board[pos] = ["SKIP"]
@@ -40,19 +40,26 @@ class Park:
                 self.board[pos].extend(bonus)
 
         self.player_positions: dict[str, int] = {}  # colour: position
+        self.leaving_bonuses: List[List[str]] = []  # these get consumed when a player leaves the park
+        if num_players == 4:
+            self.leaving_bonuses.append(["REP", "REP", "REP"])
+        self.leaving_bonuses += [
+            ["REP", "REP"],
+            ["REP", "WALKED SWAP"],
+        ]
 
     def possible_moves(self, position: int) -> list[int]:
-        # given an existing position 1 to 14, return a list of possible positions to move to
+        # given an existing position -1 to 14, return a list of possible positions to move to
         # since a space can be a skipped space, this changes how far away other positions are.
         # a player can always move a distance of 4, but that doesn't count skips.
-        # Also, the board isnt just 1-14, but there is an upper and lower path, so position 9
+        # Also, the board isnt just 0-14, but there is an upper and lower path, so position 9
         # goes straight to position 15, and instead position 4 branches off to either position 5 or 10
         # position 15 being "available" means leaving the game board
 
         def add_targets(targets, pos, dist=5):
             if dist == 0 or pos > 15:
                 return
-            if pos < len(self.board) and self.board[pos] == ["SKIP"]:
+            if 0 <= pos < len(self.board) and self.board[pos] == ["SKIP"]:
                 dist += 1  # skips add 1 to the distance
             else:
                 targets.add(pos)
@@ -73,5 +80,10 @@ class Park:
         return f"{self.board}"
 
 
-def draw_park() -> Park:
-    return Park(PARKS.pop(random.choice(list(PARKS.keys()))))
+def draw_park(num_players: int) -> Park:
+    """
+    Draw a park card from parks.yaml
+    Parks numbered 1-8 are for 2-3 players (Rerouted Park)
+    Parks numbered 9-16 are for 4 players (Plentiful Park)
+    """
+    return Park(PARKS.pop(random.choice(list(PARKS.keys()))), num_players)

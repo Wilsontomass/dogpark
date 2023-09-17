@@ -19,3 +19,59 @@
   4: ["REP"]
   5: ["SKIP"]
   7: ["REP"]
+
+5:
+  4: ["SWAP"]
+  8: ["BALL"]
+  13: ["STICK"]
+
+6:
+  4: ["SWAP"]
+  10: ["BALL"]
+  14: ["SKIP"]
+
+7:
+  4: ["SKIP"]
+  7: ["STICK"]
+  11: ["BALL"]
+
+8:
+  4: ["SWAP"]
+  5: ["STICK"]
+  9: ["SKIP"]
+
+9:
+  4: ["REP"]
+  10: ["STICK"]
+  12: ["SWAP"]
+
+10:
+  4: ["REP"]
+  5: ["BALL"]
+  7: ["REP"]
+
+11:
+  4: ["REP"]
+  6: ["STICK"]
+  11: ["BALL"]
+
+12:
+  4: ["SWAP"]
+  10: ["BALL"]
+
+13:
+  4: ["SWAP"]
+  5: ["STICK"]
+
+14:
+  4: ["SWAP"]
+  8: ["BALL"]
+  13: ["STICK"]
+
+15:
+  4: ["TREAT"]
+  13: ["REP", "REP"]
+
+16:
+  4: ["TOY"]
+  6: ["LOOK"]

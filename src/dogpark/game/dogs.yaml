@@ -12,7 +12,7 @@ Fox_Terrier:
 Large_Munsterlander:
   b: G
   a: playmate
-  c: [BALL, STICK]
+  c: [STICK, BALL]
 
 Gordon_Setter:
   b: G
@@ -38,3 +38,353 @@ Italian_Greyhound:
   b: TO
   a: social_butterfly
   c: [STICK, TREAT]
+
+Cirneco_Dell_Etna:
+  b: H
+  a: go_fetch
+  c: [STICK, BALL, TOY]
+
+Maltese:
+  b: TO
+  a: obedient
+  c: [STICK, STICK, TOY]
+
+Swedish_Vallhund:
+  b: P
+  a: sociable
+  c: [STICK, STICK]
+
+Barbet:
+  b: G
+  a: go_fetch
+  c: [STICK, BALL, TOY]
+
+Irish_Wolfhound:
+  b: H
+  a: search_and_rescue
+  c: [BALL]
+
+Bernese_Mountain_Dog:
+  b: W
+  a: raring_to_go
+  c: [BALL, BALL]
+
+Pug:
+  b: T
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Slovakian_Rough_Haired_Pointer:
+  b: G
+  a: crafty
+  c: [BALL]
+
+Hovawart:
+  b: W
+  a: go_fetch
+  c: [BALL, BALL, TREAT]
+
+Siberian_Husky:
+  b: W
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Newfoundland:
+  b: W
+  a: search_and_rescue
+  c: [STICK]
+
+Otterhound:
+  b: H
+  a: obedient
+  c: [BALL, TREAT, TREAT]
+
+Tibetan_Mastiff:
+  b: W
+  a: obedient
+  c: [STICK, STICK, TOY]
+
+Sealyham_Terrier:
+  b: TE
+  a: go_fetch
+  c: [STICK, STICK, TOY]
+
+Alaskan_Malamute:
+  b: W
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Scottish_Terrier:
+  b: TE
+  a: raring_to_go
+  c: [STICK, STICK]
+
+Chihuahua:
+  b: TO
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Hungarian_Vizsla:
+  b: G
+  a: crafty
+  c: [STICK]
+
+Hungarian_Kuvasz:
+  b: P
+  a: eager
+  c: [TREAT]
+
+Turkish_Kangal_Dog:
+  b: P
+  a: crafty
+  c: [BALL]
+
+Bouvier_Des_Flandres:
+  b: W
+  a: eager
+  c: [TOY]
+
+Shih_Tzu:
+  b: U
+  a: obedient
+  c: [BALL, BALL, TOY]
+
+Sloughi:
+  b: H
+  a: go_fetch
+  c: [STICK, BALL, TREAT]
+
+Schnauzer:
+  b: U
+  a: raring_to_go
+  c: [STICK, STICK]
+
+Griffon_Bruxellois:
+  b: TO
+  a: stick_chaser
+  c: [STICK, STICK]
+
+Havanese:
+  b: TO
+  a: eager
+  c: [STICK, TREAT]
+
+Dachshund_Smooth_Haired:
+  b: H
+  a: social_butterfly
+  c: [STICK, TREAT]
+
+Beauceron:
+  b: P
+  a: eager
+  c: [TOY]
+
+Australian_Silky_Terrier:
+  b: TO
+  a: go_fetch
+  c: [STICK, BALL, TREAT]
+
+Foxhound:
+  b: H
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Belgian_Shepherd_Dog:
+  b: P
+  a: sociable
+  c: [STICK, STICK]
+
+Shar_Pei:
+  b: U
+  a: sociable
+  c: [BALL, BALL]
+
+Boxer:
+  b: W
+  a: social_butterfly
+  c: [STICK, TREAT]
+
+Retriever_Nova_Scotia_Duck_Tolling:
+  b: G
+  a: social_butterfly
+  c: [STICK, TOY]
+
+Entlebucher_Mountain_Dog:
+  b: W
+  a: social_butterfly
+  c: [BALL, TOY]
+
+Black_And_Tan_Coonhound:
+  b: H
+  a: go_fetch
+  c: [STICK, BALL, TOY]
+
+Retriever_Chesapeake_Bay:
+  b: G
+  a: go_fetch
+  c: [STICK, BALL, TOY]
+
+Australian_Shepherd:
+  b: P
+  a: ball_hog
+  c: [BALL, BALL]
+
+Staffordshire_Bull_Terrier:
+  b: TE
+  a: toy_collector
+  c: [TOY, TOY]
+
+Bracco_Italiano:
+  b: G
+  a: eager
+  c: [TOY]
+
+Retriever_Golden:
+  b: G
+  a: obedient
+  c: [STICK, STICK, TOY]
+
+Coton_De_Tulear:
+  b: TO
+  a: crafty
+  c: [BALL]
+
+English_toy_terrier:
+  b: TO
+  a: go_fetch
+  c: [STICK, BALL, TOY]
+
+French_Bulldog:
+  b: U
+  a: pack_dog
+  c: [TREAT, TOY]
+
+English_Setter:
+  b: G
+  a: eager
+  c: [TREAT]
+
+Bichon_Frise:
+  b: TO
+  a: sociable
+  c: [STICK, STICK]
+
+Keeshond:
+  b: U
+  a: sociable
+  c: [BALL, BALL]
+
+Segugio_Italiano:
+  b: H
+  a: go_fetch
+  c: [STICK, BALL, TREAT]
+
+Dachshund_Wire_Haired:
+  b: H
+  a: obedient
+  c: [BALL, BALL, TREAT]
+
+Lancashire_Heeler:
+  b: P
+  a: social_butterfly
+  c: [STICK, TREAT]
+
+Welsh_Corgi:
+  b: P
+  a: pack_dog
+  c: [TREAT, TOY]
+
+Bedlington_Terrier:
+  b: TE
+  a: obedient
+  c: [BALL, TREAT, TREAT]
+
+Basset_Fauve_De_Bretagne:
+  b: H
+  a: go_fetch
+  c: [BALL, BALL, TOY]
+
+Pyranean_Mountain_Dog:
+  b: P
+  a: obedient
+  c: [BALL, BALL, TOY]
+
+Great_Swiss_Mountain_Dog:
+  b: W
+  a: sociable
+  c: [STICK, STICK]
+
+Miniature_Pinscher:
+  b: TO
+  a: playmate
+  c: [STICK, BALL]
+
+Doberman:
+  b: W
+  a: ball_hog
+  c: [BALL, BALL]
+
+Hungarian_Pumi:
+  b: P
+  a: eager
+  c: [STICK, TOY]
+
+Bullmastiff:
+  b: W
+  a: obedient
+  c: [STICK, TREAT, TREAT]
+
+Spaniel_Field:
+  b: G
+  a: go_fetch
+  c: [BALL, BALL, TREAT]
+
+Poodle:
+  b: U
+  a: go_fetch
+  c: [STICK, STICK, TREAT]
+
+Border_Terrier:
+  b: TE
+  a: ball_hog
+  c: [BALL, BALL]
+
+Portuguese_Podengo:
+  b: H
+  a: sociable
+  c: [BALL, BALL]
+
+Norwich_Terrier:
+  b: TE
+  a: playmate
+  c: [STICK, BALL]
+
+Affenpinscher:
+  b: TO
+  a: search_and_rescue
+  c: [STICK]
+
+Pointer:
+  b: G
+  a: ball_hog
+  c: [BALL, BALL]
+
+Bavarian_Mountain_Hound:
+  b: H
+  a: crafty
+  c: [STICK]
+
+Borzoi:
+  b: H
+  a: ball_hog
+  c: [BALL, BALL]
+
+Norwegian_Buhund:
+  b: P
+  a: obedient
+  c: [STICK, STICK, TREAT]
+
+Pekingese:
+  b: TO
+  a: raring_to_go
+  c: [BALL, BALL]
