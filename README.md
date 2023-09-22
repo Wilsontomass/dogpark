@@ -38,5 +38,5 @@ Round 4: 8 choose 3
 
 3. Walking:
    6. players make moves on the game board, where each move has 4 possibilities, and the game board has a maximum length
-of 9. Im still trying to work out how many states this is.
+of 9. A simple search gives that the game board has 4913 possible states.
 
