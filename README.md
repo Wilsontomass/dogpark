@@ -17,16 +17,15 @@ imperfect information. A rough calculation of the number of states in the game:
 there are 4 rounds, and each round has 3 phases where decisions are made. If we assume a 3 player game for simplicity,
 we can do a rough calculation of the number of states:
 1. Recruitment:
-   2. players choose which dogs to bid on, of 3
-   3. how much to bid. from 1-4
-   4. in two rounds of bidding. 
+   1. players choose which dogs to bid on, of 3
+   2. how much to bid. from 1-4
+   3. in two rounds of bidding. 
 
 For each round of bidding, a player has 12 choices, independent of the other players. After this however, the number of
 states collapses to the permutations of the 3 dogs, i.e 6. Two rounds of bidding gives 36 states after each Recruitment
 round
 
-2. Selection:
-   4. Players select from their available dogs that they have the resources to take on a walk, up to 8 dogs.
+2. Selection: Players select from their available dogs that they have the resources to take on a walk, up to 8 dogs.
 
 The number of dogs in the kennel rises from 2 to 8 across all 4 rounds. Assuming a worst case where all dogs could be
 taken on a walk, the number of states per player per round is roughly:  
@@ -36,7 +35,6 @@ Round 3: 6 choose 3
 Round 4: 8 choose 3  
  
 
-3. Walking:
-   6. players make moves on the game board, where each move has 4 possibilities, and the game board has a maximum length
+3. Walking: players make moves on the game board, where each move has 4 possibilities, and the game board has a maximum length
 of 9. A simple search gives that the game board has 4913 possible states.
 
