@@ -8,6 +8,7 @@ from dogpark.game.park import Park
 
 class NaiveAI(DogparkAI):
     def choose_objective(self, hard: int = None, easy: int = None) -> int:
+        self.objective = easy
         return easy
 
     def bid(self, available_dogs: dict[str, dict], bids: dict[str, list]) -> (str, int):
