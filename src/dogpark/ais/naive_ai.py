@@ -2,7 +2,6 @@ import random
 from typing import Optional
 
 from dogpark.ais.dogpark_ai import DogparkAI
-from dogpark.game import ANY
 from dogpark.game.park import Park
 
 
@@ -91,12 +90,34 @@ class NaiveAI(DogparkAI):
             self.apply_bonus(bonus)
 
     def choose_destination(self, park: Park) -> int:
-        destination = random.choice(park.possible_moves(park.player_positions[self.colour]))
-        return destination
+        possible = park.possible_moves(park.player_positions[self.colour])
+        if len(possible) == 1:
+            return possible[0]
+        without_players = [p for p in possible if p not in park.player_positions.values()]
+        if len(without_players) == 1:
+            return without_players[0]
+        if 15 in without_players:
+            without_players.remove(15)
+        resources_without_players = {p: park.board[p] for p in without_players}
+        # if possible, take resources we are low on
+        lowest_resources = []
+        smallest = 100
+        for resource in self.resources:
+            if self.resources[resource] < smallest:
+                smallest = self.resources[resource]
+                lowest_resources = [resource]
+            elif self.resources[resource] == smallest:
+                lowest_resources.append(resource)
+
+        for pos, bonuses in resources_without_players.items():
+            if any([r in bonuses for r in lowest_resources]):
+                return pos
+
+        return random.choice(list(resources_without_players.keys()))
 
     def pay_walking_bonus(self, park: Park, destination: int) -> bool:
         """Return true if the player would pay the walking bonus for a given destination"""
-        return True
+        return True if self.reputation > 0 else False
 
     def look(self, top_cards: dict[str, list[str]]) -> Optional[tuple[str, str]]:
         field_dog = random.choice(list(self.game.dogs.keys()))
@@ -106,3 +127,8 @@ class NaiveAI(DogparkAI):
 
     def swap(self, walked: bool) -> Optional[tuple[str, str]]:
         return  # AI doesn't swap for now
+
+
+class StingyAI(NaiveAI):
+    def pay_walking_bonus(self, park: Park, destination: int) -> bool:
+        return False

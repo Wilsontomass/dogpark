@@ -5,14 +5,14 @@ from typing import Optional
 
 from dogpark.game import ANY
 from dogpark.game.park import Park
-from dogpark.game.game import Dogpark
+from dogpark.game.gamestate import GameState
 
 
 class Player(ABC):
     """A base class player of dogpark"""
 
-    def __init__(self, game: Dogpark, colour: str, is_physical: bool = False):
-        self.game = game
+    def __init__(self, gamestate: GameState, colour: str, is_physical: bool = False):
+        self.game = gamestate
         self.is_physical = is_physical  # governs certain print and input behaviour
         self.colour = colour
         self.kennel: dict[str, dict] = {}
@@ -101,8 +101,8 @@ class Player(ABC):
     def swap(self, walked: bool) -> Optional[tuple[str, str]]:
         """
         The player must swap one dog from their kennel with a dog in the field (self.game.dogs). Unless stated
-        otherwise (walked=True), all the Walked tokens on the dog leaving the players Kennel are discarded. The player does not place
-        the Walked tokens on the new Dog in their Kennel. Swap is always an optional action.
+        otherwise (walked=True), all the Walked tokens on the dog leaving the players Kennel are discarded.
+        The player does not place the Walked tokens on the new Dog in their Kennel. Swap is always an optional action.
 
         If walked=True, then the player places a Walked token on the new dog in their Kennel. This Walked token can
         only be placed on the newly acquired Dog.
